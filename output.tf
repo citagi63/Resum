@@ -25,3 +25,6 @@ output "vpc_cidr_block" {
 output "private_subnet_cidr_blocks" {
   value = aws_subnet.conductor_private_subnet.*.cidr_block
 }
+output "private_Db_id" {
+  value = aws_subnet.conductor_private_subnet.*.id
+}
