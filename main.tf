@@ -10,7 +10,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   cluster_config {
     instance_type          = "r6g.large.search"
     instance_count         = var.instance_count
-    zone_awareness_enabled = "true"
+    #zone_awareness_enabled = "true"
     
   }
     ebs_options {
@@ -21,13 +21,13 @@ resource "aws_elasticsearch_domain" "opensearch" {
   node_to_node_encryption {
     enabled = true
   }
-   vpc_options {
-    subnet_ids = [
-      aws_subnet.conductor_private_subnet.*.id
-    ]
-    security_group_ids = [aws_security_group.conductor-sg.id]
+  # vpc_options {
+   # subnet_ids = [
+   #   aws_subnet.conductor_private_subnet.*.id
+    #]
+    #security_group_ids = [aws_security_group.conductor-sg.id]
 
-  }
+  #}
    domain_endpoint_options {
     enforce_https = var.enforce_https
     tls_security_policy = var.tls_security_policy
