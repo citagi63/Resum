@@ -1,30 +1,18 @@
-output vpc_arn {
-  value = aws_vpc.conductor_vpc.arn
+output domain_name {
+  value       =  aws_elasticsearch_domain.opensearch.domain_name
 }
-
-output vpc_id {
-  value = aws_vpc.conductor_vpc.id
+output master_name {
+    value = aws_elasticsearch_domain.master_user_options.master_user_name
 }
-
-output private_subnet_ids {
-  value = aws_subnet.conductor_private_subnet.*.id
+output subnet_id {
+    value = aws_elasticsearch_domain.vpc_options.subnet_ids
 }
-
-output main_pvt_route_table_id {
-  value = aws_vpc.conductor_vpc.main_route_table_id
+output aws_security_group{
+    value = aws_elasticsearch_domain.vpc_options.security_group_ids
 }
-
-output vpc_tag_name {
-  value = aws_vpc.conductor_vpc.tags.Name
+output volume_size {
+    value = aws_elasticsearch_domain.ebs_options.volume_size
 }
-
-output "vpc_cidr_block" {
-  value = aws_vpc.conductor_vpc.cidr_block
-}
-
-output "private_subnet_cidr_blocks" {
-  value = aws_subnet.conductor_private_subnet.*.cidr_block
-}
-output "private_Db_id" {
-  value = aws_subnet.conductor_private_subnet_db.*.id
+output volume_type {
+    value = aws_elasticsearch_domain.ebs_options.volume_type
 }
