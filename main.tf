@@ -75,8 +75,8 @@ resource "aws_route_table_association" "igw_public_subnet_assoc" {
   }
 resource "aws_route_table_association" "nat_private_subnet_assoc" {
   count = var.number_of_private_subnets
-  route_table_id = aws_route_table.private_route_table[count.index].id
-  subnet_id = aws_subnet.conductor_private_subnet[count.index].id 
+  route_table_id = aws_route_table.private_route_table.*.id[count.index]
+  subnet_id = aws_subnet.conductor_private_subnet.*.id[count.index]
   }
   resource "aws_route" "ig_public_subnet_route" {
   count = var.number_of_public_subnets
