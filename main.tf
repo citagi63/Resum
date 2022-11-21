@@ -55,6 +55,14 @@ resource "aws_nat_gateway" "conductor_nat" {
     Name = "nat_gateway-${var.environment}"
   }
 }
+resource "aws_nat_gateway" "conductor_nat_db" {
+    allocation_id = aws_eip.elastic_ip[count.index].id
+  count = var.number_of_public_subnets
+  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
+  tags = {
+    Name = "nat_gateway-db${var.environment}"
+  }
+}
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   count = var.number_of_public_subnets
