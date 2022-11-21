@@ -29,7 +29,7 @@ resource "aws_subnet" "conductor_private_subnet" {
 resource "aws_subnet" "conductor_private_subnet_db" {
     count = var.number_of_private_subnets_db
     vpc_id =  aws_vpc.conductor_vpc.id
-    cidr_block = element(var.private_subnet_cidr_blocks-db, count.index)
+    cidr_block = element(var.private_subnet_cidr_blocks_db, count.index)
     availability_zone = element(var.availability_zones, count.index)
 
     tags = {
