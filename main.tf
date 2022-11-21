@@ -68,6 +68,13 @@ resource "aws_route_table" "private_route_table" {
     Name = "${aws_subnet.conductor_private_subnet[count.index].availability_zone}-route-table-NAT-${var.environment}"
   }
 }
+resource "aws_route_table" "private_route_table_db" {
+  vpc_id = aws_vpc.conductor_vpc.id
+  count = var.number_of_private_subnets_db
+  tags = {
+    Name = "${aws_subnet.conductor_private_subnet[count.index].availability_zone}-route-table-NAT-db-${var.environment}"
+  }
+}
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
   count = var.number_of_private_subnets
   route_table_id = aws_route_table.public_route_table[count.index].id
@@ -80,7 +87,7 @@ resource "aws_route_table_association" "nat_private_subnet_assoc" {
   }
 resource "aws_route_table_association" "nat_private_subnet_assocd_db" {
   count = var.number_of_private_subnets
-  route_table_id = aws_route_table.private_route_table[count.index].id
+  route_table_id = aws_route_table.private_route_table_db[count.index].id
   subnet_id =  aws_subnet.conductor_private_subnet_db[count.index].id
   }
   resource "aws_route" "ig_public_subnet_route" {
