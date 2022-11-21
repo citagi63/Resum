@@ -23,13 +23,13 @@ resource "aws_elasticsearch_domain" "opensearch" {
     enabled = true
   }
   
-  #vpc_options {
-  # subnet_ids = [
-     #data.aws_subnet_ids.subnet-0af28d062f242cfcd.id
-   # ]
-   # security_group_ids = [data.aws_security_group.sg-0b862a24f76060a7d]
+  vpc_options {
+  subnet_ids = [
+     var.subnet_ids
+   ]
+   security_group_ids = [""]
 
-# }
+ }
    domain_endpoint_options {
     enforce_https = var.enforce_https
     tls_security_policy = var.tls_security_policy
