@@ -25,7 +25,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   
   vpc_options {
   subnet_ids = [
-     data.aws_subnet.ids.subnet-0d32a57812e92bac9
+     data.aws_subnet_ids.counductor_private_subnet.id[0],
    ]
    security_group_ids = [""]
 
