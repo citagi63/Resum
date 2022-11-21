@@ -97,7 +97,7 @@ resource "aws_route_table_association" "igw_public_subnet_assoc" {
 resource "aws_route_table_association" "nat_private_subnet_assoc" {
   count = var.number_of_private_subnets
   route_table_id = aws_route_table.private_route_table[count.index].id
-  subnet_id = aws_subnet.conductor_private_subnet[count.index].id
+  subnet_id = [ "aws_subnet.conductor_private_subnet[count.index].id" , "aws_subnet.conductor_private_subnet_db[count.index].id"]
   }
   resource "aws_route" "ig_public_subnet_route" {
   count = var.number_of_public_subnets
@@ -111,9 +111,4 @@ resource "aws_route" "nat_private_subnet_route" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
 }
-resource "aws_route" "nat_private_subnet_route_db" {
-  count = var.number_of_private_subnets_db
-  route_table_id = aws_route_table.private_route_table_db[count.index].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.conductor_nat_db[count.index].id
-}
+
