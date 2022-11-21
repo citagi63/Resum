@@ -29,9 +29,9 @@ resource "aws_elasticsearch_domain" "opensearch" {
    subnet_ids = [
      data.aws_subnet_ids.subnet-0af28d062f242cfcd.id
     ]
-    security_group_ids = [aws_security_group.sg-0b862a24f76060a7d]
+    security_group_ids = [data.aws_security_group.sg-0b862a24f76060a7d]
 
- #}
+ }
    domain_endpoint_options {
     enforce_https = var.enforce_https
     tls_security_policy = var.tls_security_policy
