@@ -3,7 +3,7 @@ variable "domain_name" {
   description = "Domain name for opensearch"
 }
 variable "elasticsearch_version" {
-    type        = number
+    type        = string
     description = "Elasticsearch version"
 }
  variable "instance_type" {
