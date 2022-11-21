@@ -40,6 +40,10 @@ resource "aws_elasticsearch_domain" "opensearch" {
       master_user_arn = "arn:aws:iam::375566442973:user/master"
   }
   }
+  encrypt_at_rest {
+    enabled    = "true"
+    kms_key_id = ""
+  }
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
