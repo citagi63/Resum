@@ -55,14 +55,6 @@ resource "aws_nat_gateway" "conductor_nat" {
     Name = "nat_gateway-${var.environment}"
   }
 }
-resource "aws_nat_gateway" "conductor_nat_db" {
-    allocation_id = aws_eip.elastic_ip[count.index].id
-  count = var.number_of_public_subnets
-  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
-  tags = {
-    Name = "nat_gateway-db${var.environment}"
-  }
-}
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   count = var.number_of_public_subnets
@@ -110,10 +102,4 @@ resource "aws_route" "nat_private_subnet_route" {
   route_table_id = aws_route_table.private_route_table[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
-}
-resource "aws_route" "nat_private_subnet_route_db" {
-  count = var.number_of_private_subnets_db
-  route_table_id = aws_route_table.private_route_table_db[count.index].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.conductor_nat_db[count.index].id
 }
