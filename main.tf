@@ -29,17 +29,19 @@ resource "aws_elasticsearch_domain" "opensearch" {
     #security_group_ids = [aws_security_group.conductor-sg.id]
 
   #}
+  encrypt_at_rest = {
+    enabled    = "true"
+  }
    domain_endpoint_options {
     enforce_https = var.enforce_https
     tls_security_policy = var.tls_security_policy
   }
   advanced_security_options {
     enabled = true
+     master_user_options {
+      master_user_arn = "arn:aws:iam::375566442973:user/master"
   }
-  #master_user_options {
-    #master_user_name = var.master_user_name
-    #master_user_password = var.master_user_password
-  #}
+  }
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
