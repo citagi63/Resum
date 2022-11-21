@@ -1,69 +1,60 @@
-variable "vpc_tag_name" {
+variable "domain_name" {
   type        = string
-  description = "Name the vpc"
+  description = "Domain name for opensearch"
 }
-variable "environment" {
+variable " elasticsearch_version" {
+    type        = number
+    description = "Elasticsearch version"
+}
+ variable "instance_type" {
+    type        = string
+    description = "Instance type for elastic serach instace"
+ }
+ variable "instance_count" {
+    type        = number
+    description = "enter number of instace requied"
+ }
+ variable "ebs_enabled"{
+    type        = bool
+    description = "where need Ebs volume or not"
+ }
+ variable "volume_size"{
+    type        = number
+    description = "Size of ebs volume needed"
+ }
+ variable "volume_type" {
+    type        = string
+    description = "Ebs Volume type"
+ }
+ variable "enforce_https" {
+    type        = bool
+    default     = true
+    description = "Whether or not to require HTTPS"
+}
+ variable "tls_security_policy" {
+    type        = string
+    default     =  "Policy-Min-TLS-1-0-2019-07"
+    description = "Name of the TLS security policy that needs to be applied to the HTTPS endpoint."
+ }
+  variable "master_user_name" {
   type        = string
-  description = "Application enviroment"
+  description = "Name of the master user within this Opensearch cluster."
 }
-variable "public_subnet_tag_name" {
-  type        = string
-  description = "Name tag for the public subnet"
+variable "master_user_password"  {
+    type = string
+    description = "Set password for master user"
 }
-variable "private_subnet_tag_name" {
-  type        = string
-  description = "Name tag for the private subnet"
+variable "include_numbers" {
+  type        = bool
+  default     = true
+  description = "Whether or not to include numbers in the password."
 }
-variable "number_of_private_subnets" {
-  type = number 
-  default = 1
-  description = "The number of private subnets in a VPC."
+variable "dedicated_master_enabled" {
+  type        =  bool
+  description = "Whether dedicated main nodes are enabled for the cluster."
 }
-variable "number_of_public_subnets" {
-  type = number 
-  default = 1
-  description = "The number of public subnets in a VPC."
-}
-variable "main_pvt_route_table_id" {
-  type        = string
-  description = "Main route table id"
-}
-variable "vpc_cidr_block" {
-  type        = string
-  default     = "10.0.0.0/16"
-  description = "CIDR block range for vpc"
+variable "internal_user_database_enabled" {
+    type       = bool
+    description = "internal user for database"
 }
 
-variable "private_subnet_cidr_blocks" {
-  type        = list(string)
-  default     = ["10.0.6.0/24", "10.0.4.0/24"]
-  description = "CIDR block range for the private subnets"
-}
-
-variable "public_subnet_cidr_blocks" {
-  type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.3.0/24"]
-  description = "CIDR block range for the public subnets"
-}
-
-variable "app_port" {
-  type        = string
-  description = "app port"
-}
-
-variable "aws_default_region" {}
-
-variable "availability_zones" {
-  type  = list(string)
-  default = ["us-west-1a", "us-west-1b"]
-  description = "List of availability zones for the selected region"
-}
-variable "number_of_private_subnets_db"{
-  type  = number
-  default = 2
-  description = "number of subnets for DB"
-}
-variable "private_subnet_cidr_blocks_db"{
-  type = list(string)
-  default = ["10.0.5.0/24", "10.0.7.0/24"]
-  }
