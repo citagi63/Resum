@@ -22,9 +22,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   node_to_node_encryption {
     enabled = true
   }
-  encrypt_at_rest = {
-    enabled    = "true"
-  }
+  
   #vpc_options {
   # subnet_ids = [
      #data.aws_subnet_ids.subnet-0af28d062f242cfcd.id
