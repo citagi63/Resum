@@ -8,7 +8,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   domain_name           = var.domain_name
   elasticsearch_version = var.elasticsearch_version
   cluster_config {
-    #instance_type          = "r6g.large.search"
+    instance_type          = var.instace_type
     instance_count         = var.instance_count
     #zone_awareness_enabled = "true"
     #master_user_name = var.master_user_name
