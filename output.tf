@@ -10,9 +10,9 @@ output master_name {
 #output aws_security_group{
     #value = aws_elasticsearch_domain.vpc_options.security_group_ids
 #}
-output volume_size {
-    value = aws_elasticsearch_domain.ebs_options.volume_size.id
-}
+#output volume_size {
+    #value = aws_elasticsearch_domain.ebs_options.volume_size.id
+#}
 #output volume_type {
     #value = aws_elasticsearch_domain.ebs_options.volume_type
 #}
