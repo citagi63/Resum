@@ -2,7 +2,7 @@ variable "domain_name" {
   type        = string
   description = "Domain name for opensearch"
 }
-variable " elasticsearch_version" {
+variable "elasticsearch_version" {
     type        = number
     description = "Elasticsearch version"
 }
