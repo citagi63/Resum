@@ -36,8 +36,8 @@ resource "aws_elasticsearch_domain" "opensearch" {
   }
   advanced_security_options {
     enabled = true
+   internal_user_database_enabled = "true"
      master_user_options {
-      internal_user_database_enabled = "true"
       master_user_arn = "arn:aws:iam::375566442973:user/master"
       master_user_name = var.master_user_name
      master_user_password = var.master_user_password
