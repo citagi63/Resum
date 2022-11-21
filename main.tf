@@ -50,7 +50,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
             "Action": "es:*",
             "Principal": "*",
             "Effect": "Allow",
-            "Resource": "arn:aws:es:domain/${aws_elasticsearch_domain.openserch.domain_name}"
+            "Resource": "arn:aws:es:domain/${var.domain_name}"
         }
     ]
 }
