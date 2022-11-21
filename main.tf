@@ -22,6 +22,9 @@ resource "aws_elasticsearch_domain" "opensearch" {
   node_to_node_encryption {
     enabled = true
   }
+  encrypt_at_rest = {
+    enabled    = "true"
+  }
   # vpc_options {
    # subnet_ids = [
    #   aws_subnet.conductor_private_subnet.*.id
@@ -29,9 +32,6 @@ resource "aws_elasticsearch_domain" "opensearch" {
     #security_group_ids = [aws_security_group.conductor-sg.id]
 
   #}
-  encrypt_at_rest = {
-    enabled    = "true"
-  }
    domain_endpoint_options {
     enforce_https = var.enforce_https
     tls_security_policy = var.tls_security_policy
