@@ -27,13 +27,13 @@ resource "aws_subnet" "conductor_private_subnet" {
     }    
 }
 resource "aws_subnet" "conductor_private_subnet_db" {
-   count = var.number_of_private_subnets_db
-   vpc_id =  aws_vpc.conductor_vpc.id
-   cidr_block = element(var.private_subnet_cidr_blocks_db, count.index)
+    count = var.number_of_private_subnets_db
+    vpc_id =  aws_vpc.conductor_vpc.id
+    cidr_block = element(var.private_subnet_cidr_blocks-db, count.index)
     availability_zone = element(var.availability_zones, count.index)
 
     tags = {
-      Name = "${var.private_subnet_tag_name}-db-${var.environment}"
+        Name = "${var.private_subnet_tag_name}-db-${var.environment}"
     }    
 }
 resource "aws_internet_gateway" "internet_gateway" {
@@ -43,15 +43,14 @@ resource "aws_eip" "elastic_ip" {
   count = var.number_of_public_subnets
   vpc = true
   tags = {
-    Name = "elastic_ip_[count.index + 1 ]"
+    Name = "elastic_ip-${count.index + 1}"
   }
 }
 resource "aws_nat_gateway" "conductor_nat" {
-    allocation_id = aws_eip.elastic_ip.id
-  #count = var.number_of_public_subnets
-  subnet_id = [ aws_subnet.conductor_public_subnet.id[0],  aws_subnet.conductor_public_subnet.id[1]]
-
-    tags = {
+    allocation_id = aws_eip.elastic_ip[count.index].id
+  count = var.number_of_public_subnets
+  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
+  tags = {
     Name = "nat_gateway-${var.environment}"
   }
 }
@@ -59,46 +58,34 @@ resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   #count = var.number_of_public_subnets
   tags = {
-    Name = "${aws_subnet.conductor_private_subnet.availability_zone}-route-table-public-${var.environment}"
+    Name = "${aws_subnet.conductor_private_subnet[count.index].availability_zone}-route-table-public-${var.environment}"
   }
 }
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   #count = var.number_of_private_subnets
   tags = {
-    Name = "${aws_subnet.conductor_private_subnet.availability_zone}-route-table-NAT-${var.environment}"
-  }
-}
-resource "aws_route_table" "private_route_table_db" {
-  vpc_id = aws_vpc.conductor_vpc.id
-  #count = var.number_of_private_subnets_db
-  tags = {
-    Name = "${aws_subnet.conductor_private_subnet.availability_zone}-route-table-NAT-db-${var.environment}"
+    Name = "${aws_subnet.conductor_private_subnet[count.index].availability_zone}-route-table-NAT-${var.environment}"
   }
 }
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
-  #count = var.number_of_private_subnets
-  route_table_id = aws_route_table.public_route_table[count.index].id
+  count = var.number_of_private_subnets
+  route_table_id = aws_route_table.public_route_table.id
   subnet_id = aws_subnet.conductor_public_subnet[count.index].id 
   }
 resource "aws_route_table_association" "nat_private_subnet_assoc" {
-  #count = var.number_of_private_subnets
-  route_table_id = aws_route_table.private_route_table[count.index].id
-  subnet_id = aws_subnet.conductor_private_subnet[count.index].id
-  }
-resource "aws_route_table_association" "nat_private_subnet_assocd_db" {
-  #count = var.number_of_private_subnets
-  route_table_id = aws_route_table.private_route_table_db[count.index].id
-  subnet_id =  aws_subnet.conductor_private_subnet_db[count.index].id
+  count = var.number_of_private_subnets
+  route_table_id = aws_route_table.private_route_table.id
+  subnet_id = [ aws_subnet.conductor_private_subnet[count.index].id , aws_subnet.conductor_private_subnet_db ]
   }
   resource "aws_route" "ig_public_subnet_route" {
-  #count = var.number_of_public_subnets
+  count = var.number_of_public_subnets
   route_table_id = aws_route_table.public_route_table[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = aws_internet_gateway.internet_gateway.id
 }
 resource "aws_route" "nat_private_subnet_route" {
-  #count = var.number_of_private_subnets
+  count = var.number_of_private_subnets
   route_table_id = aws_route_table.private_route_table[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
