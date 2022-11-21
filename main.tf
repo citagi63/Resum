@@ -43,7 +43,7 @@ resource "aws_eip" "elastic_ip" {
   #count = var.number_of_public_subnets
   vpc = true
   tags = {
-    Name = "elastic_ip-${count.index + 1}"
+    Name = "elastic_ip"
   }
 }
 resource "aws_nat_gateway" "conductor_nat" {
