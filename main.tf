@@ -38,6 +38,8 @@ resource "aws_elasticsearch_domain" "opensearch" {
     enabled = true
      master_user_options {
       master_user_arn = "arn:aws:iam::375566442973:user/master"
+      master_user_name = var.master_user_name
+     master_user_password = var.master_user_password
   }
   }
   encrypt_at_rest {
