@@ -57,8 +57,5 @@ variable "internal_user_database_enabled" {
     type       = bool
     description = "internal user for database"
 }
-variable "subnet_name" {
-    type       = list(string)
-    description = "internal user for database"
-}
+
 
