@@ -26,30 +26,30 @@ resource "aws_subnet" "conductor_private_subnet" {
         Name = "${var.private_subnet_tag_name}-${var.environment}"
     }    
 }
-resource "aws_subnet" "conductor_private_subnet_db" {
-    count = var.number_of_private_subnets_db
-    vpc_id =  aws_vpc.conductor_vpc.id
-    cidr_block = element(var.private_subnet_cidr_blocks_db, count.index)
-    availability_zone = element(var.availability_zones, count.index)
+#resource "aws_subnet" "conductor_private_subnet_db" {
+ #   count = var.number_of_private_subnets_db
+  #  vpc_id =  aws_vpc.conductor_vpc.id
+   # cidr_block = element(var.private_subnet_cidr_blocks_db, count.index)
+    #availability_zone = element(var.availability_zones, count.index)
 
-    tags = {
-       Name = "${var.private_subnet_tag_name}-db-${var.environment}"
-    }    
-}
+    #tags = {
+     #  Name = "${var.private_subnet_tag_name}-db-${var.environment}"
+    #}    
+#}
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.conductor_vpc.id
 }
 resource "aws_eip" "elastic_ip" {
-  count = var.number_of_public_subnets
+  #count = var.number_of_public_subnets
   vpc = true
   tags = {
     Name = "elastic_ip-${count.index + 1}"
   }
 }
 resource "aws_nat_gateway" "conductor_nat" {
-    allocation_id = aws_eip.elastic_ip[count.index].id
+    allocation_id = aws_eip.elastic_ip.id
   count = var.number_of_public_subnets
-  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
+  subnet_id = aws_subnet.conductor_public_subnet.id
   tags = {
     Name = "nat_gateway-${var.environment}"
   }
@@ -78,11 +78,11 @@ resource "aws_route_table_association" "nat_private_subnet_assoc" {
   route_table_id = aws_route_table.private_route_table[count.index].id
   subnet_id = aws_subnet.conductor_private_subnet[count.index].id
   }
-resource "aws_route_table_association" "nat_private_subnet_assocd_db" {
-  count = var.number_of_private_subnets
-  route_table_id = aws_route_table.private_route_table[count.index].id
-  subnet_id =  aws_subnet.conductor_private_subnet_db[count.index].id
-  }
+#resource "aws_route_table_association" "nat_private_subnet_assocd_db" {
+ # count = var.number_of_private_subnets
+ # route_table_id = aws_route_table.private_route_table[count.index].id
+  #subnet_id =  aws_subnet.conductor_private_subnet_db[count.index].id
+  #}
   resource "aws_route" "ig_public_subnet_route" {
   count = var.number_of_public_subnets
   route_table_id = aws_route_table.public_route_table[count.index].id
