@@ -11,7 +11,8 @@ resource "aws_elasticsearch_domain" "opensearch" {
     instance_type          = "r6g.large.search"
     instance_count         = var.instance_count
     #zone_awareness_enabled = "true"
-    
+    master_user_name = var.master_user_name
+    master_user_password = var.master_user_password
   }
     ebs_options {
     ebs_enabled = var.ebs_enabled
@@ -35,10 +36,10 @@ resource "aws_elasticsearch_domain" "opensearch" {
   advanced_security_options {
     enabled = true
   }
-  master_user_options {
-    master_user_name = var.master_user_name
-    master_user_password = var.master_user_password
-  }
+  #master_user_options {
+    #master_user_name = var.master_user_name
+    #master_user_password = var.master_user_password
+  #}
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
