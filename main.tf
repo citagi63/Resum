@@ -66,7 +66,7 @@ resource "aws_route_table_association" "igw_public_subnet_assoc" {
 
 resource "aws_nat_gateway" "conductor_nat" {
   allocation_id = aws_eip.elastic_ip.id
-  count = var.number_of_public_subnets
+  count = 1
   subnet_id = aws_subnet.conductor_public_subnet[count.index].id
   tags = {
     Name = "nat_gateway-${var.environment}"
@@ -81,5 +81,5 @@ resource "aws_route_table" "private_route_table" {
 resource "aws_route_table_association" "nat_private_subnet" {
   count = var.number_of_private_subnets
   route_table_id = aws_route_table.private_route_table.id
-  subnet_id = aws_subnet.conductor_private_subnet_db[count.index].id
+  subnet_id = aws_subnet.conductor_private_subnet[count.index].id
   }
