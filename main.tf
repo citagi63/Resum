@@ -85,7 +85,7 @@ resource "aws_route_table_association" "nat_private_subnet" {
   subnet_id = aws_subnet.conductor_private_subnet[count.index].id
   }
 resource "aws_nat_gateway" "conductor_nat_db" {
-  allocation_id = aws_eip.elastic_ip[count.index].id
+  allocation_id = "eipalloc-0cc96429daada7a90"
   count = 1
   subnet_id = aws_subnet.conductor_public_subnet[count.index].id
   tags = {
