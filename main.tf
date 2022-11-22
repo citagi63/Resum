@@ -66,7 +66,7 @@ resource "aws_route_table_association" "igw_public_subnet_assoc" {
 
 resource "aws_nat_gateway" "conductor_nat" {
   allocation_id = aws_eip.elastic_ip.id
-  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
+  subnet_id = aws_subnet.conductor_public_subnet.id
   tags = {
     Name = "nat_gateway-${var.environment}"
   }
