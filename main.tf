@@ -98,7 +98,7 @@ resource "aws_route_table" "private_route_table_db" {
     Name = "private-route-table-NAT-${var.environment}"
   }
 }
-resource "aws_route_table_association" "nat_private_subnet" {
+resource "aws_route_table_association" "nat_private_subnet_db" {
   count = var.number_of_private_subnets_db
   route_table_id = aws_route_table.private_route_table_db.id
   subnet_id = aws_subnet.conductor_private_subnet_db[count.index].id
