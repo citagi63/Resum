@@ -8,9 +8,8 @@ data "aws_vpc" "selected" {
 }
 data "aws_subnet_ids" "selected" {
   vpc_id = data.aws_vpc.selected.id
-   filter {
-    name = "tag:Name"
-    values = ["conductor_private_subnet_dev"]
+    tags = {
+    Tier = "private"
   }
 }
 data "aws_region" "current" {}
@@ -39,7 +38,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   
   vpc_options {
   subnet_ids = [
-   data.aws_subnet_ids.selected.value.id
+   "${element(data.aws_subnet_ids.private.ids, count.index)}"
    ]
    security_group_ids = [""]
 
