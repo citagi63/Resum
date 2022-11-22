@@ -73,21 +73,18 @@ resource "aws_route_table" "private_route_table" {
   #vpc_id = aws_vpc.conductor_vpc.id
   #count = var.number_of_private_subnets_db
   #tags = {
-   # Name = "${aws_subnet.conductor_private_subnet_db[count.index].availability_zone}-route-table-NAT-db-${var.environment}"
+   # Name = "${aws_subnet.conductor_private_subnet_db[count.index]}-route-table-NAT-db-${var.environment}"
  # }
 #}
 resource "aws_route_table_association" "nat_private_subnet_db" {
-  count = var.number_of_private_subnets_db
   route_table_id = aws_route_table.private_route_table[count.index].id
   subnet_id = aws_subnet.conductor_private_subnet_db[count.index].id
   }
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
-  count = var.number_of_private_subnets
   route_table_id = aws_route_table.public_route_table[count.index].id
   subnet_id = aws_subnet.conductor_public_subnet[count.index].id 
   }
 resource "aws_route_table_association" "nat_private_subnet_assoc" {
-  count = var.number_of_private_subnets
   route_table_id = aws_route_table.private_route_table[count.index].id
   subnet_id = aws_subnet.conductor_private_subnet[count.index].id
   }
@@ -98,14 +95,8 @@ resource "aws_route_table_association" "nat_private_subnet_assoc" {
   gateway_id = aws_internet_gateway.internet_gateway.id
 }
 resource "aws_route" "nat_private_subnet_route" {
-  count = var.number_of_private_subnets
   route_table_id = aws_route_table.private_route_table[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
 }
-#resource "aws_route" "nat_private_subnet_route_db" {
-  #count = var.number_of_private_subnets_db
-  #route_table_id = aws_route_table.private_route_table[count.index].id
-  #destination_cidr_block = "0.0.0.0/0"
-  #nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
-#}
+
