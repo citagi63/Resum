@@ -54,8 +54,8 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
-  route_table_id = aws_route_table.public_route_table[count.index].id
-  subnet_id = aws_subnet.conductor_public_subnet[count.index].id 
+  route_table_id = aws_route_table.public_route_table.id
+  subnet_id = aws_subnet.conductor_public_subnet.id[*] 
   }
   resource "aws_route" "ig_public_subnet_route" {
   route_table_id = aws_route_table.public_route_table.id
