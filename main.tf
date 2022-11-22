@@ -1,6 +1,3 @@
-#module "vpc" {
- # source = "../vpc"
-#}
 
 resource "aws_iam_service_linked_role" "es" {
   aws_service_name = "es.amazonaws.com"
@@ -11,9 +8,6 @@ resource "aws_elasticsearch_domain" "opensearch" {
   cluster_config {
     instance_type          = var.instance_type
     instance_count         = var.instance_count
-    #zone_awareness_enabled = "true"
-    #master_user_name = var.master_user_name
-   # master_user_password = var.master_user_password
   }
     ebs_options {
     ebs_enabled = var.ebs_enabled
