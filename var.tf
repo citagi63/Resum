@@ -59,6 +59,5 @@ variable "internal_user_database_enabled" {
 }
 variable "subnet_id" {
     type       = string
-    default = []
 }
 variable "vpc" {}
