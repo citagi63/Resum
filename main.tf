@@ -38,7 +38,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   
   vpc_options {
   subnet_ids = [
-   "${element(data.aws_subnet_ids.conducor_private.ids, count.index)}"
+   "${element(data.aws_subnet_ids.conductor_private.ids, count.index)}"
    ]
    security_group_ids = [""]
 
