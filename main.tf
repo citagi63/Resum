@@ -109,3 +109,9 @@ resource "aws_route_table_association" "nat_private_subnet_db" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.conductor_nat_db[count.index].id
 }
+ resource "aws_route" "nat_private_subnet_route" {
+  count = 1
+  route_table_id = aws_route_table.private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
+}
