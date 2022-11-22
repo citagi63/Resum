@@ -7,10 +7,10 @@ data "aws_vpc" "selected" {
   }
 }
 data "aws_subnet_ids" "selected" {
-  vpc_id = data.aws_vpc.conductor*.id
-
-  tags = {
-    Tier = "private"
+  vpc_id = data.aws_vpc.selected.id
+   filter {
+    name = "tag:Name"
+    values = ["conductor_private_subnet_dev"]
   }
 }
 data "aws_region" "current" {}
