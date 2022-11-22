@@ -36,17 +36,11 @@ resource "aws_subnet" "conductor_private_subnet_db" {
         Name = "${var.private_subnet_tag_name}-db-${var.environment}"
     }    
 }
-
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.conductor_vpc.id
 }
-resource "aws_eip" "elastic_ip_app" {
-  vpc = true
-  tags = {
-    Name = "elastic_ip-app"
-  }
-}
-
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   tags = {
@@ -63,19 +57,26 @@ resource "aws_route_table_association" "igw_public_subnet_assoc" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = aws_internet_gateway.internet_gateway.id
 }
-
+--------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+resource "aws_eip" "elastic_ip_app" {
+  vpc = true
+  tags = {
+    Name = "elastic_ip-app"
+  }
+}
 resource "aws_nat_gateway" "conductor_nat" {
   allocation_id = aws_eip.elastic_ip_app.id
   count = 1
   subnet_id = aws_subnet.conductor_public_subnet[count.index].id
   tags = {
-    Name = "nat_gateway-${var.environment}"
+    Name = "nat_gateway-app-${var.environment}"
   }
 }
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   tags = {
-    Name = "private-route-table-NAT-${var.environment}"
+    Name = "private-route-table-NAT-app-${var.environment}"
   }
 }
 resource "aws_route_table_association" "nat_private_subnet" {
@@ -83,6 +84,14 @@ resource "aws_route_table_association" "nat_private_subnet" {
   route_table_id = aws_route_table.private_route_table.id
   subnet_id = aws_subnet.conductor_private_subnet[count.index].id
   }
+ resource "aws_route" "nat_private_subnet_route" {
+  count = 1
+  route_table_id = aws_route_table.private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
+}
+----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
 resource "aws_eip" "elastic_ip_db" {
   vpc = true
   tags = {
@@ -113,10 +122,4 @@ resource "aws_route_table_association" "nat_private_subnet_db" {
   route_table_id = aws_route_table.private_route_table_db.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.conductor_nat_db[count.index].id
-}
- resource "aws_route" "nat_private_subnet_route" {
-  count = 1
-  route_table_id = aws_route_table.private_route_table.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
 }
