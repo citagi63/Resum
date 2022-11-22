@@ -44,7 +44,7 @@ resource "aws_eip" "elastic_ip" {
   vpc = true
   count = var.number_of_public_subnets
   tags = {
-    Name = "elastic_ip-[count.index + 1]"
+    Name = "elastic_ip-${count.index + 1}"
   }
 }
 
