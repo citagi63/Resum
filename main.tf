@@ -42,8 +42,9 @@ resource "aws_internet_gateway" "internet_gateway" {
 }
 resource "aws_eip" "elastic_ip" {
   vpc = true
+  count = var.number_of_public_subnets
   tags = {
-    Name = "elastic_ip-dev"
+    Name = "elastic_ip-[count.index + 1]"
   }
 }
 
@@ -82,4 +83,23 @@ resource "aws_route_table_association" "nat_private_subnet" {
   count = var.number_of_private_subnets
   route_table_id = aws_route_table.private_route_table.id
   subnet_id = aws_subnet.conductor_private_subnet[count.index].id
+  }
+resource "aws_nat_gateway" "conductor_nat_db" {
+  allocation_id = aws_eip.elastic_ip.id
+  count = 1
+  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
+  tags = {
+    Name = "nat_gateway-${var.environment}"
+  }
+}
+resource "aws_route_table" "private_route_table_db" {
+  vpc_id = aws_vpc.conductor_vpc.id
+  tags = {
+    Name = "private-route-table-NAT-${var.environment}"
+  }
+}
+resource "aws_route_table_association" "nat_private_subnet" {
+  count = var.number_of_private_subnets_db
+  route_table_id = aws_route_table.private_route_table_db.id
+  subnet_id = aws_subnet.conductor_private_subnet_db[count.index].id
   }
