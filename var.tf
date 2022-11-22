@@ -57,8 +57,8 @@ variable "internal_user_database_enabled" {
     type       = bool
     description = "internal user for database"
 }
-variable "subnet_ids" {
-    type       = list(string)
+variable "subnet_id" {
+    type       = string
     default = []
 }
 variable "vpc" {}
