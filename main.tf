@@ -89,13 +89,13 @@ resource "aws_route_table_association" "nat_private_subnet_assoc" {
   }
   resource "aws_route" "ig_public_subnet_route" {
   count = var.number_of_public_subnets
-  route_table_id = aws_route_table.public_route_table.id
+  route_table_id = aws_route_table.public_route_table[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = aws_internet_gateway.internet_gateway.id
 }
 resource "aws_route" "nat_private_subnet_route" {
   route_table_id = aws_route_table.private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.conductor_nat[count.index].id
+  nat_gateway_id = aws_nat_gateway.conductor_nat.id
 }
 
