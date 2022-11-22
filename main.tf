@@ -1,6 +1,20 @@
 #module "vpc" {
  # source = "../vpc"
 #}
+data "aws_vpc" "selected" {
+  tags = {
+    Name = var.vpc
+  }
+}
+data "aws_subnet_ids" "selected" {
+  vpc_id = data.aws_vpc.selected.id
+
+  tags = {
+    Tier = "private"
+  }
+}
+data "aws_region" "current" {}
+
 resource "aws_iam_service_linked_role" "es" {
   aws_service_name = "es.amazonaws.com"
 }
@@ -25,7 +39,8 @@ resource "aws_elasticsearch_domain" "opensearch" {
   
   vpc_options {
   subnet_ids = [
-     "subnet-00a29c057e221692f"
+   data.aws_subnet_ids.selected.ids[0],
+   data.aws_subnet_ids.selected.ids[1],
    ]
    security_group_ids = [""]
 
