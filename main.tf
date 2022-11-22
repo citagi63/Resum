@@ -50,7 +50,7 @@ resource "aws_eip" "elastic_ip" {
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   tags = {
-    Name = "publicroute-table-${var.environment}"
+    Name = "public-route-table-${var.environment}"
   }
 }
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
@@ -64,3 +64,21 @@ resource "aws_route_table_association" "igw_public_subnet_assoc" {
   gateway_id = aws_internet_gateway.internet_gateway.id
 }
 
+resource "aws_nat_gateway" "conductor_nat" {
+  allocation_id = aws_eip.elastic_ip.id
+  subnet_id = aws_subnet.conductor_public_subnet[count.index].id
+  tags = {
+    Name = "nat_gateway-${var.environment}"
+  }
+}
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.conductor_vpc.id
+  tags = {
+    Name = "private-route-table-NAT-${var.environment}"
+  }
+}
+resource "aws_route_table_association" "nat_private_subnet" {
+  count = var.number_of_private_subnets
+  route_table_id = aws_route_table.private_route_table.id
+  subnet_id = aws_subnet.conductor_private_subnet_db[count.index].id
+  }
