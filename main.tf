@@ -50,7 +50,7 @@ resource "aws_eip" "elastic_ip" {
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   tags = {
-    Name = "public-route-table-${availability_zone}-route-table-public-${var.environment}"
+    Name = "publicroute-table-${var.environment}"
   }
 }
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
