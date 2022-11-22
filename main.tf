@@ -9,7 +9,7 @@ data "aws_vpc" "selected" {
 data "aws_subnet_ids" "selected" {
   vpc_id = data.aws_vpc.selected.id
     tags = {
-    Tier = "private"
+    name = "conductor_private"
   }
 }
 data "aws_region" "current" {}
