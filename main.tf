@@ -83,7 +83,7 @@ resource "aws_route_table_association" "nat_private_subnet" {
   route_table_id = aws_route_table.private_route_table.id
   subnet_id = aws_subnet.conductor_private_subnet[count.index].id
   }
-resource "aws_eip" "elastic_ip_app" {
+resource "aws_eip" "elastic_ip_db" {
   vpc = true
   tags = {
     Name = "elastic_ip-db"
