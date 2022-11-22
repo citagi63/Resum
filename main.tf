@@ -1,18 +1,6 @@
 #module "vpc" {
  # source = "../vpc"
 #}
-data "aws_vpc" "selected" {
-  tags = {
-    Name = var.vpc
-  }
-}
-data "aws_subnet_ids" "selected" {
-  vpc_id = data.aws_vpc.selected.id
-    tags = {
-    name = "conductor_private_subnet_dev"
-    }
-}
-data "aws_region" "current" {}
 
 resource "aws_iam_service_linked_role" "es" {
   aws_service_name = "es.amazonaws.com"
