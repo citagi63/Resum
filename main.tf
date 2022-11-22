@@ -65,7 +65,7 @@ resource "aws_route_table" "public_route_table" {
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.conductor_vpc.id
   tags = {
-    Name = "${aws_subnet.conductor_private_subnet.availability_zone}-route-table-NAT-${var.environment}"
+    Name = "${aws_subnet.conductor_private_subnet[count.index].availability_zone}-route-table-NAT-${var.environment}"
   }
 }
 #resource "aws_route_table" "private_route_table_db" {
@@ -80,7 +80,7 @@ resource "aws_route_table_association" "nat_private_subnet_db" {
   subnet_id = aws_subnet.conductor_private_subnet_db[count.index].id
   }
 resource "aws_route_table_association" "igw_public_subnet_assoc" {
-  route_table_id = aws_route_table.public_route_table.id
+  route_table_id = aws_route_table.public_route_table[count.index].id
   subnet_id = aws_subnet.conductor_public_subnet[count.index].id 
   }
 resource "aws_route_table_association" "nat_private_subnet_assoc" {
