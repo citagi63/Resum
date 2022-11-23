@@ -101,7 +101,7 @@ resource "aws_ecs_task_definition" "conductor_task" {
 }])
 }
 resource "aws_lb" "nlb" {
-  name               = "nlb-${var.cluster_name}"
+  name               = "nlb-conductor"
   internal           = true
   load_balancer_type = "network"
   subnets            = var.private_subnet_ids
