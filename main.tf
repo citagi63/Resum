@@ -23,4 +23,3 @@ resource "aws_task_definition" "conductor_task" {
         hostPort      = var.container_port
    }]
 }
-}
