@@ -1,3 +1,21 @@
 output cluster-name {
   value = aws_ecs_cluster.conductor.name
 }
+output task defination name{
+  value = aws_ecs_task_definition.conductor_task.family
+}
+output ecs service name {
+  value = aws_ecs_service.main.name
+}
+output ecr repo name {
+  value = aws_ecr_repository.ecr_repo.name
+}
+output ecr repo name {
+  value = aws_ecr_repository.ecr_repo.repository_url
+}
+output "ALb name" {
+  value = aws_lb.alb.name
+}
+output "ALb name" {
+  value = aws_lb.alb.DNS_name
+}
