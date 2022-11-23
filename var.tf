@@ -29,3 +29,6 @@ variable alb_name {
 variable "app_image"{
   type  = string
 }
+variable cluster_tag_name {
+  type = string
+  default = "conductor"
