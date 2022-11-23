@@ -22,3 +22,6 @@ variable "private_subnet_ids" {
     type = list(string)
 }
 variable region {}
+variable "vpc_id" {
+    type = string
+}
