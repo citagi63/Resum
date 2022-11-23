@@ -22,7 +22,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   subnet_ids = [
     var.subnet_id
    ]
-   security_group_ids = [""]
+   security_group_ids = ["sg-0fc0362955214d62d"]
 
  }
    domain_endpoint_options {
