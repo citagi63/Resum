@@ -32,3 +32,4 @@ variable "app_image"{
 variable cluster_tag_name {
   type = string
   default = "conductor"
+}
