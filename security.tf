@@ -36,6 +36,6 @@ ingress {
   }
 
   tags = {
-    Name = "allow_Alb"
+    Name = "allow_alb"
   }
 }
