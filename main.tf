@@ -4,7 +4,7 @@ resource "aws_security_group" "allow_alb" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description      = ["Alb from ecs_cluster", "Allow conductor" "Allow api_gateway"]
+    description      = ["Alb from ecs_cluster", "Allow conductor", "Allow api_gateway"]
     from_port        = [ 80 , 5000 , 8080 ]
     to_port          =  [ 80 , 5000 , 8080 ]
     protocol         = "tcp"
