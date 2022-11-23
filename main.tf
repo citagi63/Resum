@@ -75,7 +75,7 @@ resource "aws_ecs_task_definition" "conductor_task" {
 }
 resource "aws_ecs_service" "main" {
   name            = "${var.cluster_name}-service"
-  cluster         = var.cluster_name.id
+  cluster         = var.cluster_name_id
   task_definition = aws_ecs_task_definition.conductor_task.family
   desired_count   = 2
   launch_type     = "FARGATE"
