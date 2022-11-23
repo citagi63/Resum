@@ -2,10 +2,6 @@ resource "aws_security_group" "allow_alb" {
   name        = "allow_alb"
   description = "Allow Alb inbound traffic"
   vpc_id      = var.vpc_id
-
-  ingress {
-    name = "Alb"
-    description = "Alb security group"
    dynamic "ingress" {
     for_each = var.ingress_rules
     content {
