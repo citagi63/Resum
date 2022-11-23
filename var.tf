@@ -27,7 +27,7 @@ variable "ingress_rules" {
     "from_port"   = ["80", "5000", "8080"]
     "to_port"     = ["80", "5000", "8080"]
     "protocol"    = ["tcp", "tcp", "tcp"]
-    "cidr_blocks" = ["0.0.0.0/0", "0.0.0.0/0" "0.0.0.0/0"]
+    "cidr_blocks" = ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0"]
   }
   type        = map(list(string))
   description = "Security group rules"
