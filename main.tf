@@ -141,7 +141,7 @@ resource "aws_lb" "alb" {
 }
 resource "aws_lb_target_group" "alb_tg" {
   depends_on  = [
-    aws_lb.nlb
+    aws_lb.alb
   ]
   name        = "alb-${var.environment}-tg"
   port        = var.container_port
