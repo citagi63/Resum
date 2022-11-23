@@ -1,7 +1,7 @@
 resource "aws_security_group" "allow_alb" {
   name        = "allow_tls"
   description = "Allow alb inbound traffic"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 
   ingress {
     description      = "alb from VPC"
