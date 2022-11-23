@@ -148,7 +148,7 @@ resource "aws_lb_target_group" "alb_tg" {
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
-  connection_termination = true
+  connection_termination = false
 }
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.alb.arn
