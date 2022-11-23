@@ -14,3 +14,11 @@ variable "container_port" {
 variable "environment" {
     type = string
 }
+variable "aws_security_group_ecs_tasks_id"{
+    type = string
+    default = ""
+}
+variable "private_subnet_ids" {
+    type = list(string)
+}
+variable region {}
