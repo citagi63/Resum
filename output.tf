@@ -16,6 +16,6 @@ output ecr-repo-url {
 output aLb-name {
   value = aws_lb.alb.name
 }
-output aLb-dns {
-  value = aws_lb.alb.dns
+output security-group-id {
+  value = aws_security_group.id
 }
