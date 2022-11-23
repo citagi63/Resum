@@ -7,9 +7,9 @@ output "cluster_version" {
 }
 output "cluster_endpoint" {
   description = "The endpoint URL of the OpenSearch cluster."
-  value       = "https://${aws_elasticsearch_domain.opensearch.domain_endpoint_options[0].custom_endpoint}"
+  value       = "https://${aws_elasticsearch_domain.opensearch.domain_endpoint_options.custom_endpoint}"
 }
 output "kibana_endpoint" {
   description = "The endpoint URL of the OpenSearch dashboards."
-  value       = "https://${aws_elasticsearch_domain.opensearch.domain_endpoint_options[0].custom_endpoint}/_dashboards/"
+  value       = "https://${aws_elasticsearch_domain.opensearch.domain_endpoint_options.custom_endpoint}/_dashboards/"
 }
