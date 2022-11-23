@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "conductor_task" {
     name        = "${var.cluster_name}-container-${var.environment}"
     image       = "ngnix:latest"
     essential   = true
-    environment = var.environment
+    environment = [{"name": "VARNAME", "value": var.environment}]
     portMappings = [{
         protocol      = "tcp"
         containerPort = var.container_port
