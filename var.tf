@@ -26,3 +26,6 @@ variable "vpc_id" {
 variable alb_name {
   type  = string 
 }
+variable "app_image"{
+  type  = string
+}
