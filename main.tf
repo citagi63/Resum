@@ -4,12 +4,18 @@ resource "aws_security_group" "allow_alb" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description      = ["Alb from ecs_cluster", "Allow conductor", "Allow api_gateway"]
-    from_port        = [ "80" , "5000" , "8080" ]
-    to_port          =  [ "80" , "5000" , "8080" ]
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    name = "Alb"
+    description = "Alb security group"
+   dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      description      = lookup(ingress.value, "description", null)
+      from_port        = lookup(ingress.value, "from_port", null)
+      to_port          = lookup(ingress.value, "to_port", null)
+      protocol         = lookup(ingress.value, "protocol", null)
+      cidr_blocks      = lookup(ingress.value, "cidr_blocks", null)
+    }
+  }
   }
 
   egress {
