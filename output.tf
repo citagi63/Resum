@@ -17,5 +17,5 @@ output aLb-name {
   value = aws_lb.alb.name
 }
 output security-group-id {
-  value = aws_security_group.id
+  value = aws_security_group.allow_alb.id
 }
