@@ -1,6 +1,45 @@
-module "security" {
-    source = "/security.tf"
+resource "aws_security_group" "allow_alb" {
+  name        = "allow_tls"
+  description = "Allow alb inbound traffic"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description      = "alb from VPC"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+ingress {
+    description      = "alb from conductor"
+    from_port        = 5000
+    to_port          = 5000
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  ingress {
+    description      = "alb from Api"
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_alb"
+  }
 }
+
 resource "aws_ecs_cluster" "conductor" {
     name = var.cluster_name
 }
@@ -108,7 +147,7 @@ resource "aws_lb" "alb" {
   internal           = true
   load_balancer_type = "application"
   subnets            = var.private_subnet_ids
-  security_groups    = module.security.aws_security_group.allow_alb.id
+  security_groups    = aws_security_group.allow_alb.id
   enable_cross_zone_load_balancing = true
 
   enable_deletion_protection = false
@@ -145,11 +184,11 @@ resource "aws_ecs_service" "main" {
   desired_count   = 1
   launch_type     = "FARGATE"
     network_configuration {
-    security_groups = [module.security.aws_security_group.allow_alb.id]
+    security_groups = [aws_security_group.allow_alb.id]
     subnets         = var.private_subnet_ids
   }
     load_balancer {
-    target_group_arn = aws_lb_target_group.alb_tg.arn
+    target_group_arn = aws_lb_target_group.alb_tg.ar
     container_name   = "${var.cluster_name}-container-${var.environment}"
     container_port   = var.container_port
   }
