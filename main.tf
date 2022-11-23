@@ -21,7 +21,7 @@ EOF
 }
 
 resource "aws_iam_role" "ecs_tasks" {
-  name = "main_ecs_tasks-${var.clustr_name}-role"
+  name = "main_ecs_tasks-${var.cluster_name}-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
