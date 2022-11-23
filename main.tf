@@ -11,7 +11,7 @@ resource "aws_security_group" "allow_alb" {
       protocol         = lookup(ingress.value, "protocol", null)
       cidr_blocks      = lookup(ingress.value, "cidr_blocks", null)
     }
-  }
+  
   }
 
   egress {
