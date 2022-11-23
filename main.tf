@@ -1,5 +1,5 @@
 resource "aws_security_group" "allow_alb" {
-  name        = "allow_tls"
+  name        = "allow_alb"
   description = "Allow alb inbound traffic"
   vpc_id      = var.vpc_id
 
@@ -143,7 +143,7 @@ resource "aws_ecs_task_definition" "conductor_task" {
 }])
 }
 resource "aws_lb" "alb" {
-  name               = "alb-conductor"
+  name               = var.alb_name
   internal           = true
   load_balancer_type = "application"
   subnets            = var.private_subnet_ids
