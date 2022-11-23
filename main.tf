@@ -73,3 +73,17 @@ resource "aws_ecs_task_definition" "conductor_task" {
    }]
 }])
 }
+resource "aws_ecs_service" "main" {
+  name            = "${var.name}-service"
+  cluster         = var.cluster_name.id
+  task_definition = aws_ecs_task_definition.conductor_task.family
+  desired_count   = 2
+  launch_type     = "FARGATE"
+    network_configuration {
+    security_groups = [var.aws_security_group_ecs_tasks_id]
+    subnets         = var.private_subnet_ids
+  }
+  depends_on = [
+    aws_ecs_task_definition.conductor_task,
+  ]
+}
