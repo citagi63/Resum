@@ -21,6 +21,6 @@ resource "aws_task_definition" "conductor_task" {
         protocol      = "tcp"
         containerPort = var.container_port
         hostPort      = var.container_port
-   }]
+   }],
 }]
         }
