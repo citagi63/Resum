@@ -5,7 +5,7 @@ resource "aws_security_group" "allow_alb" {
    dynamic "ingress" {
     for_each = var.ingress_rules
     content {
-      description      = lookup(ingress.value, "description", null)
+      description      = map(ingress.value, "description", null)
       from_port        = lookup(ingress.value, "from_port", null)
       to_port          = lookup(ingress.value, "to_port", null)
       protocol         = lookup(ingress.value, "protocol", null)
