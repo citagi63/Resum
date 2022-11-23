@@ -90,7 +90,7 @@ resource "aws_ecs_task_definition" "conductor_task" {
     task_role_arn            = aws_iam_role.ecs_tasks.arn
     container_definitions = jsonencode([{
     name        = "${var.cluster_name}-container-${var.environment}"
-    image       = "ngnix:latest"
+    image       = "nginx:latest"
     essential   = true
     environment = [{"name": "VARNAME", "value": var.environment}]
     portMappings = [{
