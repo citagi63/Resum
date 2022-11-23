@@ -1,31 +1,5 @@
-resource "aws_security_group" "allow_alb" {
-  name        = "allow_alb"
-  description = "Allow Alb inbound traffic"
-  vpc_id      = var.vpc_id
-   dynamic "ingress" {
-    for_each = var.ingress_rules
-    content {
-      description      = map(ingress.value, "description", null)
-      from_port        = lookup(ingress.value, "from_port", null)
-      to_port          = lookup(ingress.value, "to_port", null)
-      protocol         = lookup(ingress.value, "protocol", null)
-      cidr_blocks      = lookup(ingress.value, "cidr_blocks", null)
-    }
-  
-  }
 
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
 
-  tags = {
-    Name = "allow_Alb"
-  }
-}
 resource "aws_ecs_cluster" "conductor" {
     name = var.cluster_name
 }
