@@ -137,7 +137,7 @@ resource "aws_lb_listener" "nlb_listener" {
 resource "aws_ecs_service" "main" {
   name            = "conductor-service"
   cluster         = aws_ecs_cluster.conductor.name
-  task_definition = aws_ecs_task_definition.conductor_task.family
+  task_definition = aws_ecs_task_definition.conductor_task.arn
   desired_count   = 1
   launch_type     = "FARGATE"
     network_configuration {
