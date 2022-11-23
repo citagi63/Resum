@@ -86,8 +86,8 @@ resource "aws_ecs_task_definition" "conductor_task" {
     requires_compatibilities = ["FARGATE"]
     cpu                      = 256
     memory                   = 512
-    execution_role_arn      = aws_iam_role.ecs_task_execution_role.arn
-    task_role_arn            = aws_iam_role.ecs_task_role.arn
+    execution_role_arn      = aws_iam_role.task_role.arn
+    task_role_arn            = aws_iam_role.ecs_tasks.arn
     container_definitions = jsonencode([{
     name        = "${var.cluster_name}-container-${var.environment}"
     image       = "ngnix:latest"
