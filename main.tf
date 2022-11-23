@@ -145,7 +145,7 @@ resource "aws_lb_target_group" "alb_tg" {
   ]
   name        = "alb-${var.environment}-tg"
   port        = var.container_port
-  protocol    = "TCP"
+  protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
   connection_termination = true
@@ -153,7 +153,7 @@ resource "aws_lb_target_group" "alb_tg" {
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = var.container_port
-  protocol    = "TCP"
+  protocol    = "HTTP"
 
   default_action {
     target_group_arn = aws_lb_target_group.alb_tg.id
