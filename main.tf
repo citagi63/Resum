@@ -135,7 +135,7 @@ resource "aws_lb_listener" "nlb_listener" {
   }
 }
 resource "aws_ecs_service" "main" {
-  name            = "${var.cluster_name}-service"
+  name            = "conductor-service"
   cluster         = var.cluster_name
   task_definition = aws_ecs_task_definition.conductor_task.family
   desired_count   = 1
