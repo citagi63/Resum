@@ -1,3 +1,29 @@
+resource "aws_security_group" "allow_alb" {
+  name        = "allow_alb"
+  description = "Allow Alb inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "Alb from ecs_cluster"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_Alb"
+  }
+}
 resource "aws_ecs_cluster" "conductor" {
     name = var.cluster_name
 }
@@ -141,7 +167,7 @@ resource "aws_ecs_service" "main" {
   desired_count   = 1
   launch_type     = "FARGATE"
     network_configuration {
-    security_groups = [var.aws_security_group_ecs_tasks_id]
+    security_groups = [aws_security_group.allow_alb.id]
     subnets         = var.private_subnet_ids
   }
     load_balancer {
