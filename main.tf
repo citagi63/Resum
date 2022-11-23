@@ -40,16 +40,44 @@ resource "aws_iam_role" "ecs_task_role" {
 }
 EOF
 }
- 
-resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
+resource "aws_iam_role_policy" "ecs_tasks" {
+  name = "main_ecs_tasks-${var.cluster_name}-policy"
+  role = aws_iam_role.ecs_task_role.id
 
-resource "aws_iam_role_policy_attachment" "task" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:Get*",
+                "s3:List*"
+            ],
+            "Resource": ["*"]
+        },
+        {
+            "Effect": "Allow",
+            "Resource": [
+              "*"
+            ],
+            "Action": [
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ssm:GetParameters",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams"
+            ]
+        }
+    ]
+
 }
+EOF
+} 
 resource "aws_ecr_repository" "ecr_repo"{
     name= var.ecr_repo
 }
