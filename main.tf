@@ -21,7 +21,7 @@ resource "aws_iam_role" "ecs_exec_role"{
             ],
             "Resource": "*"
         }
-    ]
+    ],
 }
 }
 
