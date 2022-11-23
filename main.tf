@@ -1,5 +1,6 @@
-
-
+module "security" {
+    source = ./security.tf
+}
 resource "aws_ecs_cluster" "conductor" {
     name = var.cluster_name
 }
@@ -107,7 +108,7 @@ resource "aws_lb" "alb" {
   internal           = true
   load_balancer_type = "application"
   subnets            = var.private_subnet_ids
-  security_groups    = aws_security_group.allow_alb.id
+  security_groups    = module.security.aws_security_group.allow_alb.id
   enable_cross_zone_load_balancing = true
 
   enable_deletion_protection = false
@@ -144,7 +145,7 @@ resource "aws_ecs_service" "main" {
   desired_count   = 1
   launch_type     = "FARGATE"
     network_configuration {
-    security_groups = [aws_security_group.allow_alb.id]
+    security_groups = [module.security.aws_security_group.allow_alb.id]
     subnets         = var.private_subnet_ids
   }
     load_balancer {
