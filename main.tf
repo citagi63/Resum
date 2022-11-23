@@ -146,7 +146,7 @@ resource "aws_ecs_service" "main" {
   }
     load_balancer {
     target_group_arn = aws_lb_target_group.nlb_tg.arn
-    container_name   = var.cluster_name
+    container_name   = "${var.cluster_name}-container-${var.environment}"
     container_port   = var.container_port
   }
   depends_on = [
