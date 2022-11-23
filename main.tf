@@ -1,48 +1,47 @@
 resource "aws_ecs_cluster" "conductor" {
     name = var.cluster_name
 }
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "ECS_exec_role"
- 
+resource "aws_iam_role" "task_role" {
+  name = "ecs_tasks-${var.cluster_name}-role"
   assume_role_policy = <<EOF
 {
- "Version": "2012-10-17",
- "Statement": [
-   {
-     "Action": "sts:AssumeRole",
-     "Principal": {
-       "Service": "ecs-tasks.amazonaws.com"
-     },
-     "Effect": "Allow",
-     "Sid": ""
-   }
- ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
 }
 EOF
 }
 
-resource "aws_iam_role" "ecs_task_role" {
-  name = "ecs_task_role"
- 
+resource "aws_iam_role" "ecs_tasks" {
+  name = "main_ecs_tasks-${var.clustr_name}-role"
   assume_role_policy = <<EOF
 {
- "Version": "2012-10-17",
- "Statement": [
-   {
-     "Action": "sts:AssumeRole",
-     "Principal": {
-       "Service": "ecs-tasks.amazonaws.com"
-     },
-     "Effect": "Allow",
-     "Sid": ""
-   }
- ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
 }
 EOF
 }
-resource "aws_iam_role_policy" "ecs_tasks" {
-  name = "main_ecs_tasks-${var.cluster_name}-policy"
-  role = aws_iam_role.ecs_task_role.id
+
+resource "aws_iam_role_policy" "main_ecs_tasks" {
+  name = "ecs_tasks-${var.cluster_name}-policy"
+  role = aws_iam_role.ecs_tasks.id
 
   policy = <<EOF
 {
@@ -77,7 +76,7 @@ resource "aws_iam_role_policy" "ecs_tasks" {
 
 }
 EOF
-} 
+}
 resource "aws_ecr_repository" "ecr_repo"{
     name= var.ecr_repo
 }
