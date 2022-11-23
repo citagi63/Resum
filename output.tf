@@ -19,3 +19,6 @@ output aLb-name {
 output security-group-id {
   value = aws_security_group.allow_alb.id
 }
+output image {
+  value = aws_ecs_task_definition.conductor_task.container_definitions.image
+}
