@@ -5,8 +5,8 @@ resource "aws_security_group" "allow_alb" {
 
   ingress {
     description      = ["Alb from ecs_cluster", "Allow conductor", "Allow api_gateway"]
-    from_port        = [ 80 , 5000 , 8080 ]
-    to_port          =  [ 80 , 5000 , 8080 ]
+    from_port        = [ "80" , "5000" , "8080" ]
+    to_port          =  [ "80" , "5000" , "8080" ]
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
