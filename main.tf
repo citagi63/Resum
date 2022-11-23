@@ -1,25 +1,54 @@
 resource "aws_ecs_cluster" "conductor" {
     name = var.cluster_name
 }
-resource "aws_iam_role" "ecs_exec_role"{
-    name = "task_execution_role"
-    assume_role_policy = jsonencode({ 
-        "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ecr:GetAuthorizationToken",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-            ],
-            "Resource": "*"
-        }
-    ]
-})
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "ECS_exec_role"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
+
+resource "aws_iam_role" "ecs_task_role" {
+  name = "ecs_task_role"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
+ 
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "task_s3" {
+  role       = "${aws_iam_role.ecs_task_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 resource "aws_ecr_repository" "ecr_repo"{
     name= var.ecr_repo
@@ -30,8 +59,8 @@ resource "aws_ecs_task_definition" "conductor_task" {
     requires_compatibilities = ["FARGATE"]
     cpu                      = 256
     memory                   = 512
-    execution_role_arn      = aws_iam_role.ecs_exec_role.arn
-    task_role_arn            = aws_iam_role.ecs_exec_role.arn
+    execution_role_arn      = aws_iam_role.ecs_task_execution_role.arn
+    task_role_arn            = aws_iam_role.ecs_task_role.arn
     container_definitions = jsonencode([{
     name        = "${var.cluster_name}-container-${var.environment}"
     image       = "ngnix:latest"
