@@ -24,7 +24,7 @@ resource "aws_iam_role" "ecs_exec_role"{
 resource "aws_ecr_repository" "ecr_repo"{
     name= var.ecr_repo
 }
-resource "aws_task_definition" "conductor_task" {
+resource "aws_ecs_task_definition" "conductor_task" {
     family = var.ecr_repo
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
