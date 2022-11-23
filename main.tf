@@ -188,7 +188,7 @@ resource "aws_ecs_service" "main" {
     subnets         = var.private_subnet_ids
   }
     load_balancer {
-    target_group_arn = aws_lb_target_group.alb_tg.ar
+    target_group_arn = aws_lb_target_group.alb_tg.arn
     container_name   = "${var.cluster_name}-container-${var.environment}"
     container_port   = var.container_port
   }
