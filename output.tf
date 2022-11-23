@@ -17,5 +17,5 @@ output aLb-name {
   value = aws_lb.alb.name
 }
 output aLb-dns {
-  value = aws_lb.alb.DNS_name
+  value = aws_lb.alb.dns
 }
